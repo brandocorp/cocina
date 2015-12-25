@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.name          = 'cocina'
   spec.version       = Cocina::VERSION
   spec.authors       = ['Brandon Raabe']
-  spec.email         = ['brandocorp@gmail.com']
+  spec.email         = ['brandocorp+cochina@gmail.com']
 
   spec.summary       = 'Test Kitchen with Dependencies'
   spec.description   = spec.summary
