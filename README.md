@@ -1,5 +1,52 @@
 # Cocina
 
+A thin wrapper around Test Kitchen allowing you to define dependencies for your
+suites
+
+## Usage
+
+Assuming you have a `.kitchen.yml` which looks like the following
+
+```yaml
+---
+driver:
+  name: vagrant
+
+provisioner:
+  name: chef_zero
+
+platforms:
+  - name: ubuntu-14.04
+  - name: centos-7.1
+
+suites:
+  - name: app
+    run_list:
+    attributes:
+
+  - name: web
+    run_list:
+    attributes:
+```
+
+In the root directory of your cookbook, along side your `.kitchen.yml` add a
+`Cochinafile`.
+
+```ruby
+instance 'web-ubuntu-1404' do
+  depends_on 'app-ubuntu-1404'
+end
+```
+
+This tells Cochina that the `web` suite depends on the `app` suite. Now, wen you
+run `cochina web-ubuntu-1404` it will first converge `app-ubuntu-1404` before
+continuing with `web-ubuntu-1404`
+
+By default the target instance is sent the `:verify` action, and each dependency
+is sent the `:converge` action.
+
+After all instances have finished running, each instance is destroyed.
+
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -15,10 +62,6 @@ And then execute:
 Or install it yourself as:
 
     $ gem install cocina
-
-## Usage
-
-TODO: Write usage instructions here
 
 ## Development
 
