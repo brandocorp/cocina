@@ -14,6 +14,10 @@ suites:
     run_list:
     attributes:
 
+  - name: db
+    run_list:
+    attributes:
+
   - name: web
     run_list:
     attributes:
