@@ -1,4 +1,4 @@
-# Cocina
+# Cocina [![Build Status](https://travis-ci.org/brandocorp/cocina.svg?branch=master)](https://travis-ci.org/brandocorp/cocina)
 
 A thin wrapper around Test Kitchen allowing you to define dependencies for your
 suites
