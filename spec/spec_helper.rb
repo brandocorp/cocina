@@ -8,4 +8,5 @@ class NullLogger
   def write(*args); end
 end
 
+# silence logging output while testing
 Logify.io = NullLogger.new

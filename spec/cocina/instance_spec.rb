@@ -17,11 +17,11 @@ describe Cocina::Instance do
     end
   end
 
-  describe '#depends_on' do
+  describe '#depends' do
     let(:instance) do
       i = Cocina::Instance.new('foobar')
-      i.depends_on 'foo'
-      i.depends_on 'bar'
+      i.depends 'foo'
+      i.depends 'bar'
       i
     end
 

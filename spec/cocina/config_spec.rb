@@ -19,7 +19,7 @@ describe Cocina::Config do
     end
 
     context 'with instance configuration' do
-      let(:content) { "instance 'foo' do\n  depends_on 'bar'\nend" }
+      let(:content) { "instance 'foo' do\n  depends 'bar'\nend" }
       let(:config) { Cocina::Config.new('foobar') }
 
       before do
@@ -30,7 +30,6 @@ describe Cocina::Config do
         expect(config.instances.length).to eq(1)
         expect(config.instances.first.name).to eq('foo')
       end
-
     end
   end
 end

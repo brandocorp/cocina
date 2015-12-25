@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Cocina::CLI do
   context 'when created' do
-    let(:content) { "instance 'foo' do\n  depends_on 'bar'\nend" }
+    let(:content) { "instance 'foo' do\n  depends 'bar'\nend" }
     let(:kitchen_config) { double(Kitchen::Config) }
     let(:kitchen_instances) { double('instances') }
     let(:foo) { double('foo', name: 'foo') }
@@ -36,7 +36,7 @@ describe Cocina::CLI do
   end
 
   context 'when run' do
-    let(:content) { "instance 'foo' do\n  depends_on 'bar'\nend" }
+    let(:content) { "instance 'foo' do\n  depends 'bar'\nend" }
     let(:kitchen_config) { double(Kitchen::Config) }
     let(:kitchen_instances) { double('instances') }
     let(:foo) { double('foo', name: 'foo') }

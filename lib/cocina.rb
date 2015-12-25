@@ -6,7 +6,7 @@ require 'cocina/config'
 #
 # @author Brandon Raabe
 module Cocina
-  module_function
+  extend self
 
   # @return [String] the version
   def version

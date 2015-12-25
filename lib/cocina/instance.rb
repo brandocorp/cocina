@@ -7,7 +7,7 @@ module Cocina
       @dependencies = []
     end
 
-    def depends_on(dep)
+    def depends(dep)
       @dependencies << dep
     end
   end
