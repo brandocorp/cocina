@@ -1,0 +1,3 @@
+instance 'web-ubuntu-1404' do
+  depends_on 'app-ubuntu-1404'
+end

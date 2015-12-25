@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+
+Signal.trap('INT') { exit 1 }
+
+$LOAD_PATH.unshift File.join(File.dirname(__FILE__), %w(.. lib))
+require 'rubygems'
+require 'cocina'
+require 'cocina/cli'
+
+Cocina::CLI.new(ARGV.dup.first).run
