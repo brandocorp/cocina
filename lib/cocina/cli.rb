@@ -6,72 +6,62 @@ module Cocina
   class CLI
     include Logify
 
-    attr_reader :config, :instances, :dependencies, :primary_instance
+    attr_reader :config, :instances, :collection, :dependencies
+    attr_reader :primary_instance, :primary_dependencies
 
-    # essentially startup a Kitchen::CLI
     def initialize(target)
       super()
 
-      $stdout.sync = true
       Logify.level = :debug
 
       @dependencies = []
       @config = Cocina::Config.new('Cocinafile')
-
-      @kitchen_loader = Kitchen::Loader::YAML.new(
-        project_config: ENV["KITCHEN_YAML"],
-        local_config:   ENV["KITCHEN_LOCAL_YAML"],
-        global_config:  ENV["KITCHEN_GLOBAL_YAML"]
-      )
-      @kitchen_config = Kitchen::Config.new(
-        loader: @kitchen_loader
-      )
-      @kitchen_config.log_level =
-        Kitchen.env_log unless Kitchen.env_log.nil?
-      @kitchen_config.log_overwrite =
-        Kitchen.env_log_overwrite unless Kitchen.env_log_overwrite.nil?
-
-      prepare_instances_for target
+      @primary_instance = instance(target)
+      @primary_dependencies = primary_instance.dependencies
     end
 
     def run
       log.info "Running for Target: #{primary_instance.name}"
-      dependencies.each do |machine|
-        log.info "Converging #{machine.name}"
-        machine.converge
-      end
+
+      prepare_dependencies
+      converge_dependencies
+
       primary_instance.verify
       cleanup
     end
 
-    def instance_by_name(target)
-      @config[target]
+    def instance(id)
+      @config[id]
     end
 
-    def kitchen_instance_for(target)
-      @kitchen_config.instances.get(target)
-    end
-
-    def prepare_instances_for(target)
-      log.info "Preparing all dependencies"
-      instance = instance_by_name(target)
-      @primary_instance = kitchen_instance_for(target)
-      instance.dependencies.each do |dependency|
-        log.info "#{target} depends on #{dependency}"
-        @dependencies << kitchen_instance_for(dependency)
+    def prepare_dependencies
+      primary_dependencies.each do |dep|
+        @dependencies.concat instance(dep).dependencies
+        @dependencies << dep
       end
+    end
+
+    def converge_dependencies
+      log.info "Converging all dependencies: #{dependencies}"
+      dependencies.each {|dep| converge_dependency dep }
+    end
+
+    def converge_dependency(dep)
+      log.info "Converging: #{dep}"
+      instance(dep).converge
     end
 
     def cleanup
       log.info "Cleaning up all dependencies"
       destroy_dependencies
       primary_instance.destroy
+      nil
     end
 
     def destroy_dependencies
-      dependencies.each do |machine|
-        log.info "Destroying #{machine.name}"
-        machine.destroy
+      dependencies.each do |dep|
+        log.info "Destroying #{dep}"
+        instance(dep).destroy
       end
     end
   end

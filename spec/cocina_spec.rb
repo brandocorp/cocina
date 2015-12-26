@@ -7,7 +7,7 @@ describe Cocina do
 
   describe '.version' do
     it 'returns the version number' do
-      expect(Cocina.version).to eq('0.1.0')
+      expect(Cocina.version).to eq(Cocina::VERSION)
     end
   end
 end
