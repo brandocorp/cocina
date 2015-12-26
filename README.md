@@ -1,4 +1,4 @@
-# Cocina [![Build Status](https://travis-ci.org/brandocorp/cocina.svg?branch=master)](https://travis-ci.org/brandocorp/cocina)
+# Cocina [![Build Status](https://travis-ci.org/brandocorp/cocina.svg?branch=master)](https://travis-ci.org/brandocorp/cocina) [![Test Coverage](https://codeclimate.com/github/brandocorp/cocina/badges/coverage.svg)](https://codeclimate.com/github/brandocorp/cocina/coverage)
 
 A thin wrapper around Test Kitchen allowing you to define dependencies for your
 suites
