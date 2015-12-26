@@ -65,7 +65,7 @@ module Cocina
     end
 
     def [](target)
-      @instances.select {|i| i.name == target }.first
+      @instances.find {|i| i.name == target }
     end
   end
 end
