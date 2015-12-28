@@ -20,6 +20,10 @@ platforms:
   - name: centos-7.1
 
 suites:
+  - name: db
+    run_list:
+    attributes:
+
   - name: app
     run_list:
     attributes:
@@ -34,14 +38,18 @@ In the root directory of your cookbook, along side your `.kitchen.yml` add a
 
 ```ruby
 instance 'web-ubuntu-1404' do
-  depends 'db-ubuntu-1404'
   depends 'app-ubuntu-1404'
+end
+
+instance 'app-ubuntu-1404' do
+  depends 'db-ubuntu-1404'
 end
 ```
 
-This tells Cochina that the `web` suite depends on the `app` suite. Now, wen you
-run `cochina web-ubuntu-1404` it will first converge `db-ubuntu-1404`, followed
-by `app-ubuntu-1404`, before continuing with `web-ubuntu-1404`.
+This tells Cochina that the `web` suite depends on the `app` suite, and that the 
+`app` suite depends on the `db` suite. Now, when you run `cochina web-ubuntu-1404` 
+it will first converge `db-ubuntu-1404`, followed by `app-ubuntu-1404`, before 
+continuing with `web-ubuntu-1404`.
 
 By default the target instance is sent the `:verify` action, and each dependency
 is sent the `:converge` action.
