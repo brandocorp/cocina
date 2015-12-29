@@ -3,6 +3,7 @@ addons:
     repo_token: f1a36edc54b97cf8db5a139d555d98232c8ad834bd34d44701bc975a9acd29ee
 
 language: ruby
+cache: bundler
 rvm:
   - 2.1.6
 
