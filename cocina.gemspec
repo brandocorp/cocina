@@ -24,7 +24,8 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rspec'
   spec.add_development_dependency 'pry'
 
-  spec.add_dependency 'logify'
-  spec.add_dependency 'test-kitchen'
-  spec.add_dependency 'kitchen-vagrant'
+  spec.add_dependency 'logify', '~> 0.2.0'
+  spec.add_dependency 'berkshelf', '~> 4.0.1'
+  spec.add_dependency 'test-kitchen', '~> 1.4.2'
+  spec.add_dependency 'kitchen-vagrant', '~> 0.19.0'
 end

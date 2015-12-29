@@ -1,3 +1,5 @@
+require 'forwardable'
+
 module Cocina
   class Instance
     attr_reader :name, :dependencies
