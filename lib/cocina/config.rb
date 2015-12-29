@@ -2,10 +2,8 @@ require 'cocina/instance'
 
 module Cocina
   class Config
-    include Logify
 
-    attr_reader :cocinafile
-    attr_reader :instances
+    attr_reader :cocinafile, :instances
 
     def initialize(file)
       @cocinafile = file
@@ -41,7 +39,6 @@ module Cocina
 
     def instance(id, &block)
       return true if instance?(id)
-      log.info "Building Instance for #{id}"
       cocina_instance = Cocina::Instance.new(id)
       cocina_instance.instance_eval(&block)
       cocina_instance.runner = kitchen_instance(id)
