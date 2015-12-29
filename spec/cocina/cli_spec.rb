@@ -1,6 +1,16 @@
 require 'spec_helper'
 
 describe Cocina::CLI do
+  let(:logger) do
+    Kitchen::Logger.new(level: Logger::FATAL)
+  end
+
+  before do
+    allow(Kitchen::Logger).to receive(:new)
+      .with(stdout: STDOUT, color: :white, progname: 'Cocina')
+      .and_return(logger)
+  end
+
   context 'when created and run with a single dependency' do
     let(:content) { "instance 'foo' do\n  depends 'bar'\nend" }
     let(:kitchen_config) { double(Kitchen::Config) }
