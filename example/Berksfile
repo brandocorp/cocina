@@ -1,0 +1,10 @@
+source 'https://supermarket.chef.io'
+
+cookbook 'counter_app',
+  git: 'https://github.com/brandocorp-cookbooks/counter_app.git'
+
+cookbook 'counter_nginx',
+  git: 'https://github.com/brandocorp-cookbooks/counter_nginx.git'
+
+cookbook 'counter_redis',
+  git: 'https://github.com/brandocorp-cookbooks/counter_redis.git'

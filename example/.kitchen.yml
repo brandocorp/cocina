@@ -10,14 +10,30 @@ platforms:
   - name: centos-7.1
 
 suites:
-  - name: app
+  - name: db
+    driver:
+      network:
+        - ["private_network", ip: "10.11.11.10"]
     run_list:
+      - counter_redis::default
     attributes:
 
-  - name: db
+  - name: app
+    driver:
+      network:
+        - ["private_network", ip: "10.11.11.11"]
     run_list:
+      - counter_app::default
     attributes:
+      counter_app:
+        redis_host: "10.11.11.10"
 
   - name: web
+    driver:
+      network:
+        - ["private_network", ip: "10.11.11.12"]
     run_list:
+      - counter_nginx::default
     attributes:
+      counter_app:
+        host: "10.11.11.11"
