@@ -27,7 +27,7 @@ module Cocina
       prepare_dependencies
       converge_dependencies
 
-      primary_instance.verify
+      primary_instance.run_actions
       cleanup
     end
 
@@ -48,7 +48,7 @@ module Cocina
     end
 
     def converge_dependency(dep)
-      log_banner "Converging <#{dep}>"
+      log_banner "Processing Dependency: <#{dep}>"
       instance(dep).converge
     end
 
@@ -61,7 +61,6 @@ module Cocina
 
     def destroy_dependencies
       dependencies.each do |dep|
-        logger.info "Destroying #{dep}"
         instance(dep).destroy
       end
     end

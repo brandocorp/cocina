@@ -12,7 +12,14 @@ describe Cocina::CLI do
   end
 
   context 'when created and run with a single dependency' do
-    let(:content) { "instance 'foo' do\n  depends 'bar'\nend" }
+    let(:content) do
+      "".tap do |cfg|
+        cfg << "instance 'foo' do\n"
+        cfg << "  depends 'bar'\n"
+        cfg << "  actions :create, :converge, :verify\n"
+        cfg << "end"
+      end
+    end
     let(:kitchen_config) { double(Kitchen::Config) }
     let(:kitchen_instances) { double('instances') }
     let(:foo) { double('foo', name: 'foo') }
@@ -21,6 +28,8 @@ describe Cocina::CLI do
 
     before do
       allow(foo).to receive_messages(
+        create: true,
+        converge: true,
         verify: true,
         destroy: true
       )
@@ -54,8 +63,9 @@ describe Cocina::CLI do
       cli.run
     end
 
-    it 'runs verify on the primary instance' do
-      expect(foo).to receive(:verify)
+    it 'runs all actions on the primary instance' do
+      expect(foo).to receive(:create)
+      expect(foo).to receive(:converge)
       cli.run
     end
 
