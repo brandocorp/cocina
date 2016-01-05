@@ -23,12 +23,9 @@ module Cocina
 
     def run
       log_banner "Running for: #{primary_instance.name}"
-
       prepare_dependencies
       converge_dependencies
-
       primary_instance.run_actions
-      cleanup
     end
 
     def instance(id)
