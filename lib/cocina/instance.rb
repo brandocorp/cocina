@@ -14,12 +14,25 @@ module Cocina
       @name = name
       @dependencies = []
       @actions = default_actions
+      @cleanup = false
     end
 
     # Define a dependency for the Instance
     #
     def depends(dep)
       @dependencies << dep
+    end
+
+    # Perform a cleanup of all instances after all actions have been performed
+    #
+    def cleanup(switch=nil)
+      @cleanup = switch
+    end
+
+    # Check if we want to perform cleanup for this instance
+    #
+    def cleanup?
+      @cleanup
     end
 
     # Check if the Instance has any defined dependencies

@@ -16,7 +16,8 @@ describe Cocina::CLI do
       "".tap do |cfg|
         cfg << "instance 'foo' do\n"
         cfg << "  depends 'bar'\n"
-        cfg << "  actions :create, :converge, :verify\n"
+        cfg << "  actions :create, :converge, :verify, :destroy\n"
+        cfg << "  cleanup true\n"
         cfg << "end"
       end
     end
@@ -66,6 +67,8 @@ describe Cocina::CLI do
     it 'runs all actions on the primary instance' do
       expect(foo).to receive(:create)
       expect(foo).to receive(:converge)
+      expect(foo).to receive(:verify)
+      expect(foo).to receive(:destroy)
       cli.run
     end
 
@@ -77,7 +80,15 @@ describe Cocina::CLI do
   end
 
   context 'when run with multiple dependencies' do
-    let(:content) { "instance 'foo' do\n  depends 'baz'\n  depends 'bar'\nend" }
+    let(:content) do
+      "".tap do |cfg|
+        cfg << "instance 'foo' do\n"
+        cfg << "  depends 'baz'\n"
+        cfg << "  depends 'bar'\n"
+        cfg << "  cleanup true\n"
+        cfg << "end"
+      end
+    end
     let(:kitchen_config) { double(Kitchen::Config) }
     let(:kitchen_instances) { double('instances') }
     let(:foo) { double('foo', name: 'foo') }
@@ -134,8 +145,13 @@ describe Cocina::CLI do
   context 'with nested dependencies' do
     let(:content) do
       String.new.tap do |cfg|
-        cfg << "instance 'foo' do\n depends 'bar'\nend\n"
-        cfg << "instance 'bar' do\n depends 'baz'\nend\n"
+        cfg << "instance 'foo' do\n"
+        cfg << " depends 'bar'\n"
+        cfg << " cleanup true\n"
+        cfg << "end\n\n"
+        cfg << "instance 'bar' do\n"
+        cfg << " depends 'baz'\n"
+        cfg << "end\n"
       end
     end
     let(:kitchen_config) { double(Kitchen::Config) }

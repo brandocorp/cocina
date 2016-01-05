@@ -1,9 +1,11 @@
 instance 'web-ubuntu-1404' do
   depends 'app-ubuntu-1404'
   actions :converge, :converge, :verify
+  cleanup true
 end
 
 instance 'app-ubuntu-1404' do
   depends 'db-ubuntu-1404'
   actions :converge, :converge, :verify
+  cleanup true
 end

@@ -26,6 +26,7 @@ module Cocina
       prepare_dependencies
       converge_dependencies
       primary_instance.run_actions
+      cleanup if primary_instance.cleanup?
     end
 
     def instance(id)
