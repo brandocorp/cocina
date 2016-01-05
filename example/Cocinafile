@@ -1,3 +1,6 @@
+with_kitchen_yaml '.kitchen.yml'
+log_level :info
+
 instance 'web-ubuntu-1404' do
   depends 'app-ubuntu-1404'
   actions :converge, :converge, :verify

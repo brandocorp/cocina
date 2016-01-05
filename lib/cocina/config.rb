@@ -8,29 +8,44 @@ module Cocina
     def initialize(file)
       @cocinafile = file
       @instances = []
+      @log_level = :info
 
       $stdout.sync = true
 
+      load_cocinafile
+      load_kitchen_config
+      build_dependencies
+    end
+
+    def load_cocinafile
+      self.instance_eval(IO.read(cocinafile), cocinafile, 1)
+    end
+
+    def load_kitchen_config
       @loader = Kitchen::Loader::YAML.new(
-        project_config: ENV["KITCHEN_YAML"],
+        project_config: project_kitchen_yaml,
         local_config:   ENV["KITCHEN_LOCAL_YAML"],
         global_config:  ENV["KITCHEN_GLOBAL_YAML"]
       )
       @config = Kitchen::Config.new(
         loader: @loader
       )
-      @config.log_level =
-        Kitchen.env_log unless Kitchen.env_log.nil?
+      @config.log_level = log_level
       @config.log_overwrite =
         Kitchen.env_log_overwrite unless Kitchen.env_log_overwrite.nil?
-
-      load_cocinafile
-
-      build_dependencies
     end
 
-    def load_cocinafile
-      self.instance_eval(IO.read(cocinafile), cocinafile, 1)
+    def log_level(level=nil)
+      return @log_level if level.nil?
+      @log_level = level
+    end
+
+    def with_kitchen_yaml(file)
+      @project_kitchen_yaml = file
+    end
+
+    def project_kitchen_yaml
+      @project_kitchen_yaml ||= ENV["KITCHEN_YAML"]
     end
 
     def kitchen_instance(target)
@@ -41,13 +56,13 @@ module Cocina
       return true if instance?(id)
       cocina_instance = Cocina::Instance.new(id)
       cocina_instance.instance_eval(&block)
-      cocina_instance.runner = kitchen_instance(id)
       @instances << cocina_instance
       nil
     end
 
     def build_dependencies
       instances.each do |machine|
+        machine.runner = kitchen_instance(machine.name)
         machine.dependencies.each do |id|
           next if instance?(id)
           dep = Cocina::Instance.new(id)
