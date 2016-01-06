@@ -1,0 +1,14 @@
+---
+suites:
+  - name: web
+    driver:
+      network:
+        - ['private_network', ip: '10.11.11.12']
+  - name: app
+    driver:
+      network:
+        - ['private_network', ip: '10.11.11.11']
+  - name: db
+    driver:
+      network:
+        - ['private_network', ip: '10.11.11.10']

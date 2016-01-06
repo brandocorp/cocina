@@ -1,0 +1,8 @@
+---
+suites:
+  - name: foo
+    driver:
+      network:
+  - name: bar
+    driver:
+      network:
