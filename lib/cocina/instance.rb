@@ -5,7 +5,7 @@ module Cocina
   class Instance
     extend Forwardable
 
-    attr_reader :name, :dependencies, :actions
+    attr_reader :name, :dependencies, :actions, :addresses
     attr_accessor :runner
 
     def_delegators :@runner, :destroy, :create, :converge, :verify
@@ -13,6 +13,7 @@ module Cocina
     def initialize(name)
       @name = name
       @dependencies = []
+      @addresses = []
       @actions = default_actions
       @cleanup = false
     end
@@ -41,6 +42,11 @@ module Cocina
       dependencies.empty? ? false : true
     end
 
+    # Define a network address for the instance
+    def address(type, ip=nil)
+      @addresses << [type, ip]
+    end
+
     # Set or return the list of actions
     #
     def actions(*list)
@@ -61,6 +67,10 @@ module Cocina
         # execute perform.before
         send action
       end
+    end
+
+    def suite
+      name.split('-').first
     end
 
     private

@@ -22,7 +22,6 @@ shared_context 'kitchen config' do
       .with('bar')
       .and_return(bar)
     allow(kitchen_config).to receive(:instances).and_return(kitchen_instances)
-    allow(kitchen_config).to receive(:log_level=).and_return(true)
     allow(Kitchen::Config).to receive(:new).and_return(kitchen_config)
   end
 end

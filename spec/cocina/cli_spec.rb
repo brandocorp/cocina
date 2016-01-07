@@ -45,7 +45,6 @@ describe Cocina::CLI do
         .with('bar')
         .and_return(bar)
       allow(kitchen_config).to receive(:instances).and_return(kitchen_instances)
-      allow(kitchen_config).to receive(:log_level=).and_return(true)
       allow(IO).to receive(:read).with('Cocinafile').and_return(content)
       allow(Kitchen::Config).to receive(:new).and_return(kitchen_config)
     end
@@ -120,7 +119,6 @@ describe Cocina::CLI do
         .with('bar')
         .and_return(bar)
       allow(kitchen_config).to receive(:instances).and_return(kitchen_instances)
-      allow(kitchen_config).to receive(:log_level=).and_return(true)
       allow(IO).to receive(:read).with('Cocinafile').and_return(content)
       allow(Kitchen::Config).to receive(:new).and_return(kitchen_config)
     end
