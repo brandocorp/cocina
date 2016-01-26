@@ -10,3 +10,4 @@
 .kitchen/
 .kitchen.local.yml
 .cocina.kitchen.yml
+Berksfile.lock
