@@ -94,4 +94,34 @@ describe Cocina::Instance do
       expect(with_dependency.dependencies?).to be_truthy
     end
   end
+
+  describe '#suite' do
+    let(:instance) { Cocina::Instance.new('suite-name-ubuntu-9000') }
+
+    it 'returns the suite name' do
+      expect(instance.suite).to eq('suite-name')
+    end
+  end
+
+  describe '#address' do
+    context 'when passed an IP address' do
+      let(:instance) { Cocina::Instance.new('foobar') }
+      let(:address) { ['private_network', {ip: '1.1.1.1'}]}
+
+      it 'stores the proper network data' do
+        instance.address('1.1.1.1')
+        expect(instance.addresses).to eq([address])
+      end
+    end
+
+    context 'when passed :dhcp' do
+      let(:instance) { Cocina::Instance.new('foobar') }
+      let(:address) { ['private_network', {type: 'dhcp'}]}
+
+      it 'stores the proper network data' do
+        instance.address(:dhcp)
+        expect(instance.addresses).to eq([address])
+      end
+    end
+  end
 end
