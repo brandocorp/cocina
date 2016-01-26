@@ -43,8 +43,13 @@ module Cocina
     end
 
     # Define a network address for the instance
-    def address(type, ip=nil)
-      @addresses << [type, ip]
+    def address(ip)
+      @addresses << case ip
+                    when :dhcp
+                      ['private_network', {type: "dhcp"}]
+                    else
+                      ['private_network', {ip: ip}]
+                    end
     end
 
     # Set or return the list of actions
@@ -63,14 +68,15 @@ module Cocina
     # Run all actions defined for the Instance
     #
     def run_actions
+      # Override instance addresses before creating
+      override_addresses
       actions.each do |action|
-        # execute perform.before
         send action
       end
     end
 
     def suite
-      name.split('-').first
+      name.scan(/([\w-]+)-(\w*)-(\w*)/).flatten.first
     end
 
     private
@@ -83,6 +89,10 @@ module Cocina
     #
     def state
       @runner.last_action
+    end
+
+    def override_addresses
+      runner.driver.instance_eval { @config[:network] = addresses }
     end
 
     # def execute(*cmds)
