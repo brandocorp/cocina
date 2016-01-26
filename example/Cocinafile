@@ -4,18 +4,18 @@ log_level :info
 instance 'web-ubuntu-1404' do
   depends 'app-ubuntu-1404'
   actions :converge, :converge, :verify
-  address :static, "10.11.11.12"
+  address "10.11.11.12"
   cleanup true
 end
 
 instance 'app-ubuntu-1404' do
   depends 'db-ubuntu-1404'
   actions :converge, :converge, :verify
-  address :static, "10.11.11.11"
+  address "10.11.11.11"
   cleanup true
 end
 
 instance 'db-ubuntu-1404' do
-  address :static, "10.11.11.10"
+  address "10.11.11.10"
   actions :create
 end
